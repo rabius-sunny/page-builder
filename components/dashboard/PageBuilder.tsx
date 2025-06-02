@@ -1,24 +1,24 @@
-'use client';
+'use client'
 
-import { Card, CardContent } from '@/components/ui/card';
-import { useCurrentPage } from '@/hooks/useCurrentPage';
-import { useDragAndDrop } from '@/hooks/useDragAndDrop';
-import { usePages } from '@/hooks/usePages';
-import { useState } from 'react';
-import PageDialogs from './PageDialogs';
-import PageBuilderHeader from './PageBuilderHeader';
-import PageList from './PageList';
-import SectionButtons from './SectionButtons';
-import PageEditor from './PageEditor';
+import { Card, CardContent } from '@/components/ui/card'
+import { useCurrentPage } from '@/hooks/useCurrentPage'
+import { useDragAndDrop } from '@/hooks/useDragAndDrop'
+import { usePages } from '@/hooks/usePages'
+import { useState } from 'react'
+import PageDialogs from './PageDialogs'
+import PageBuilderHeader from './PageBuilderHeader'
+import PageList from './PageList'
+import SectionButtons from './SectionButtons'
+import PageEditor from './PageEditor'
 
 export default function PageBuilder() {
   // Dialog states
-  const [showCreateDialog, setShowCreateDialog] = useState(false);
-  const [showEditDialog, setShowEditDialog] = useState(false);
-  const [newPageTitle, setNewPageTitle] = useState('');
-  const [newPageSlug, setNewPageSlug] = useState('');
-  const [editPageTitle, setEditPageTitle] = useState('');
-  const [editPageSlug, setEditPageSlug] = useState('');
+  const [showCreateDialog, setShowCreateDialog] = useState(false)
+  const [showEditDialog, setShowEditDialog] = useState(false)
+  const [newPageTitle, setNewPageTitle] = useState('')
+  const [newPageSlug, setNewPageSlug] = useState('')
+  const [editPageTitle, setEditPageTitle] = useState('')
+  const [editPageSlug, setEditPageSlug] = useState('')
 
   // Custom hooks for data management
   const {
@@ -28,7 +28,7 @@ export default function PageBuilder() {
     updatePageMetadata,
     deletePageHandler,
     togglePagePublish
-  } = usePages();
+  } = usePages()
 
   const {
     currentPage,
@@ -44,71 +44,67 @@ export default function PageBuilder() {
     moveSectionDown,
     setCurrentPage,
     setSections
-  } = useCurrentPage();
+  } = useCurrentPage()
 
   // Drag and drop state
-  const { isDragging } = useDragAndDrop();
+  const { isDragging } = useDragAndDrop()
 
-  const loading = pagesLoading || pageLoading;
+  const loading = pagesLoading || pageLoading
 
   const handleCreatePage = async () => {
-    const newPage = await createNewPage(newPageTitle, newPageSlug);
+    const newPage = await createNewPage(newPageTitle, newPageSlug)
     if (newPage) {
-      setNewPageTitle('');
-      setNewPageSlug('');
-      setShowCreateDialog(false);
+      setNewPageTitle('')
+      setNewPageSlug('')
+      setShowCreateDialog(false)
       // Auto-select the new page
-      await loadPage(newPage._id!);
+      await loadPage(newPage.slug)
     }
-  };
+  }
 
   const handleUpdateMetadata = async () => {
-    if (!currentPage) return;
+    if (!currentPage) return
 
-    const updatedPage = await updatePageMetadata(
-      currentPage._id!,
-      editPageTitle,
-      editPageSlug
-    );
+    const updatedPage = await updatePageMetadata(currentPage._id!, editPageTitle, editPageSlug)
 
     if (updatedPage) {
-      setCurrentPage(updatedPage);
-      setShowEditDialog(false);
+      setCurrentPage(updatedPage)
+      setShowEditDialog(false)
     }
-  };
+  }
 
   const openEditDialog = (page: CustomPage) => {
-    setEditPageTitle(page.title);
-    setEditPageSlug(page.slug);
-    setShowEditDialog(true);
-  };
+    setEditPageTitle(page.title)
+    setEditPageSlug(page.slug)
+    setShowEditDialog(true)
+  }
 
   const openPagePreview = () => {
     if (currentPage && currentPage.isPublished) {
-      window.open(`/${currentPage.slug}`, '_blank');
+      window.open(`/${currentPage.slug}`, '_blank')
     }
-  };
+  }
 
   const handleTogglePublish = async () => {
     if (currentPage) {
-      const updatedPage = await togglePagePublish(currentPage);
+      const updatedPage = await togglePagePublish(currentPage)
       if (updatedPage) {
-        setCurrentPage(updatedPage);
+        setCurrentPage(updatedPage)
       }
     }
-  };
+  }
 
-  const handlePageSelect = async (pageId: string) => {
-    await loadPage(pageId);
-  };
+  const handlePageSelect = async (pageSlug: string) => {
+    await loadPage(pageSlug)
+  }
 
   const handleDeletePage = async (pageId: string, pageTitle: string) => {
-    const success = await deletePageHandler(pageId, pageTitle);
+    const success = await deletePageHandler(pageId, pageTitle)
     if (success && currentPage?._id === pageId) {
-      setCurrentPage(null);
-      setSections([]);
+      setCurrentPage(null)
+      setSections([])
     }
-  };
+  }
 
   return (
     <div className='p-6'>
@@ -144,17 +140,12 @@ export default function PageBuilder() {
           <PageList
             pages={pages}
             currentPage={currentPage}
-            loading={loading}
+            loading={pagesLoading}
             onPageSelect={handlePageSelect}
             onDeletePage={handleDeletePage}
           />
 
-          {currentPage && (
-            <SectionButtons
-              onAddSection={addSection}
-              isDragging={isDragging}
-            />
-          )}
+          {currentPage && <SectionButtons onAddSection={addSection} isDragging={isDragging} />}
         </div>
 
         {/* Main Content - Page Editor */}
@@ -178,8 +169,7 @@ export default function PageBuilder() {
             <Card>
               <CardContent className='p-8 text-center'>
                 <p className='text-muted-foreground'>
-                  Select a page from the sidebar to start editing, or create a
-                  new page.
+                  Select a page from the sidebar to start editing, or create a new page.
                 </p>
               </CardContent>
             </Card>
@@ -187,5 +177,5 @@ export default function PageBuilder() {
         </div>
       </div>
     </div>
-  );
+  )
 }
