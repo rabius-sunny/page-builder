@@ -1,38 +1,32 @@
-'use client';
+'use client'
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
-import { Separator } from '@/components/ui/separator';
-import CharacterCount from '@tiptap/extension-character-count';
-import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
-import Color from '@tiptap/extension-color';
-import Highlight from '@tiptap/extension-highlight';
-import Image from '@tiptap/extension-image';
-import Link from '@tiptap/extension-link';
-import Placeholder from '@tiptap/extension-placeholder';
-import Subscript from '@tiptap/extension-subscript';
-import Superscript from '@tiptap/extension-superscript';
-import Table from '@tiptap/extension-table';
-import TableCell from '@tiptap/extension-table-cell';
-import TableHeader from '@tiptap/extension-table-header';
-import TableRow from '@tiptap/extension-table-row';
-import TextAlign from '@tiptap/extension-text-align';
-import TextStyle from '@tiptap/extension-text-style';
-import Typography from '@tiptap/extension-typography';
-import Underline from '@tiptap/extension-underline';
-import Youtube from '@tiptap/extension-youtube';
-import {
-  BubbleMenu,
-  EditorContent,
-  FloatingMenu,
-  useEditor
-} from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
+} from '@/components/ui/dropdown-menu'
+import { Separator } from '@/components/ui/separator'
+import CharacterCount from '@tiptap/extension-character-count'
+import Color from '@tiptap/extension-color'
+import Highlight from '@tiptap/extension-highlight'
+import Image from '@tiptap/extension-image'
+import Link from '@tiptap/extension-link'
+import Placeholder from '@tiptap/extension-placeholder'
+import Subscript from '@tiptap/extension-subscript'
+import Superscript from '@tiptap/extension-superscript'
+import Table from '@tiptap/extension-table'
+import TableCell from '@tiptap/extension-table-cell'
+import TableHeader from '@tiptap/extension-table-header'
+import TableRow from '@tiptap/extension-table-row'
+import TextAlign from '@tiptap/extension-text-align'
+import TextStyle from '@tiptap/extension-text-style'
+import Typography from '@tiptap/extension-typography'
+import Underline from '@tiptap/extension-underline'
+import Youtube from '@tiptap/extension-youtube'
+import { BubbleMenu, EditorContent, FloatingMenu, useEditor } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
 
 import {
   AlignCenter,
@@ -65,9 +59,9 @@ import {
   Undo,
   Unlink,
   Youtube as YoutubeIcon
-} from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
-import ImageResize from 'tiptap-extension-resize-image';
+} from 'lucide-react'
+import { useCallback, useEffect, useState } from 'react'
+import ImageResize from 'tiptap-extension-resize-image'
 import {
   getEditorStats,
   insertImageFromUrl,
@@ -76,16 +70,16 @@ import {
   insertTable,
   insertVideoFromUrl,
   setLinkFromUrl
-} from '../../../utils/editor-utils';
-import './editor.css';
+} from '../../../utils/editor-utils'
+import './editor.css'
 
 type TProps = {
-  content?: string;
-  onChange?: (content: string) => void;
-  placeholder?: string;
-  editable?: boolean;
-  className?: string;
-};
+  content?: string
+  onChange?: (content: string) => void
+  placeholder?: string
+  editable?: boolean
+  className?: string
+}
 
 export default function TextEditor({
   content = '',
@@ -94,10 +88,7 @@ export default function TextEditor({
   editable = true,
   className = ''
 }: TProps) {
-  const [showColorPicker, setShowColorPicker] = useState(false);
-  const [showLinkDialog, setShowLinkDialog] = useState(false);
-  const [linkUrl, setLinkUrl] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
+  const [showColorPicker, setShowColorPicker] = useState(false)
 
   const editor = useEditor({
     extensions: [
@@ -156,89 +147,82 @@ export default function TextEditor({
     editable,
     immediatelyRender: false,
     onUpdate: ({ editor }) => {
-      onChange?.(editor.getHTML());
-    },
-    onCreate: () => {
-      setIsLoading(false);
+      onChange?.(editor.getHTML())
     }
-  });
+  })
 
   // Close color picker when clicking outside
   useEffect(() => {
     const handleClickOutside = () => {
-      setShowColorPicker(false);
-    };
+      setShowColorPicker(false)
+    }
 
     if (showColorPicker) {
-      document.addEventListener('click', handleClickOutside);
-      return () => document.removeEventListener('click', handleClickOutside);
+      document.addEventListener('click', handleClickOutside)
+      return () => document.removeEventListener('click', handleClickOutside)
     }
-  }, [showColorPicker]);
+  }, [showColorPicker])
 
   const addImage = useCallback(() => {
-    const url = window.prompt('Enter image URL:');
+    const url = window.prompt('Enter image URL:')
     if (url && editor) {
-      insertImageFromUrl(editor, url);
+      insertImageFromUrl(editor, url)
     }
-  }, [editor]);
+  }, [editor])
 
   const addInlineImageLeft = useCallback(() => {
-    const url = window.prompt('Enter image URL for inline image (left):');
+    const url = window.prompt('Enter image URL for inline image (left):')
     if (url && editor) {
-      insertInlineImageFromUrl(editor, url, 'left');
+      insertInlineImageFromUrl(editor, url, 'left')
     }
-  }, [editor]);
+  }, [editor])
 
   const addInlineImageRight = useCallback(() => {
-    const url = window.prompt('Enter image URL for inline image (right):');
+    const url = window.prompt('Enter image URL for inline image (right):')
     if (url && editor) {
-      insertInlineImageFromUrl(editor, url, 'right');
+      insertInlineImageFromUrl(editor, url, 'right')
     }
-  }, [editor]);
+  }, [editor])
 
   const addSmallInlineImageLeft = useCallback(() => {
-    const url = window.prompt('Enter image URL for small inline image (left):');
+    const url = window.prompt('Enter image URL for small inline image (left):')
     if (url && editor) {
-      insertSmallInlineImage(editor, url, 'left');
+      insertSmallInlineImage(editor, url, 'left')
     }
-  }, [editor]);
+  }, [editor])
 
   const addSmallInlineImageRight = useCallback(() => {
-    const url = window.prompt(
-      'Enter image URL for small inline image (right):'
-    );
+    const url = window.prompt('Enter image URL for small inline image (right):')
     if (url && editor) {
-      insertSmallInlineImage(editor, url, 'right');
+      insertSmallInlineImage(editor, url, 'right')
     }
-  }, [editor]);
+  }, [editor])
 
   const addYoutubeVideo = useCallback(() => {
-    const url = window.prompt('Enter YouTube URL:');
+    const url = window.prompt('Enter YouTube URL:')
     if (url && editor) {
-      insertVideoFromUrl(editor, url);
+      insertVideoFromUrl(editor, url)
     }
-  }, [editor]);
+  }, [editor])
 
   const setLink = useCallback(() => {
-    if (!editor) return;
-    setLinkFromUrl(editor);
-  }, [editor]);
+    if (!editor) return
+    setLinkFromUrl(editor)
+  }, [editor])
 
   const addTable = useCallback(() => {
-    if (!editor) return;
-    insertTable(editor);
-  }, [editor]);
+    if (!editor) return
+    insertTable(editor)
+  }, [editor])
 
   const insertHorizontalRule = useCallback(() => {
-    if (!editor) return;
-    editor.chain().focus().setHorizontalRule().run();
-  }, [editor]);
+    if (!editor) return
+    editor.chain().focus().setHorizontalRule().run()
+  }, [editor])
 
   if (!editor) {
     return (
-      <div
-        className={`border border-gray-200 rounded-lg overflow-hidden ${className}`}
-      >
+      <div className={`border border-gray-200 rounded-lg overflow-hidden ${className}`}>
         <div className='border-b border-gray-200 p-2 bg-gray-50'>
           <div className='flex flex-wrap items-center gap-1'>
             <div className='animate-pulse flex space-x-2'>
@@ -249,7 +233,7 @@ export default function TextEditor({
             </div>
           </div>
         </div>
-        <div className='p-4 min-h-[300px]'>
+        <div className='h-[400px] p-4 overflow-y-auto'>
           <div className='animate-pulse'>
             <div className='h-4 bg-gray-300 rounded w-3/4 mb-4'></div>
             <div className='h-4 bg-gray-300 rounded w-1/2 mb-4'></div>
@@ -260,7 +244,7 @@ export default function TextEditor({
           <div className='animate-pulse h-4 bg-gray-300 rounded w-32'></div>
         </div>
       </div>
-    );
+    )
   }
 
   const colors = [
@@ -279,12 +263,10 @@ export default function TextEditor({
     '#F43F5E',
     '#06B6D4',
     '#84CC16'
-  ];
+  ]
 
   return (
-    <div
-      className={`border border-gray-200 rounded-lg overflow-hidden ${className}`}
-    >
+    <div className={`border border-gray-200 rounded-lg overflow-hidden ${className}`}>
       {/* Toolbar */}
       <div className='border-b border-gray-200 p-2 bg-gray-50'>
         <div className='flex flex-wrap items-center gap-1'>
@@ -306,10 +288,7 @@ export default function TextEditor({
             <Redo className='h-4 w-4' />
           </Button>
 
-          <Separator
-            orientation='vertical'
-            className='mx-1 h-6'
-          />
+          <Separator orientation='vertical' className='mx-1 h-6' />
 
           {/* Text Formatting */}
           <Button
@@ -348,50 +327,32 @@ export default function TextEditor({
             <Code className='h-4 w-4' />
           </Button>
 
-          <Separator
-            orientation='vertical'
-            className='mx-1 h-6'
-          />
+          <Separator orientation='vertical' className='mx-1 h-6' />
 
           {/* Headings */}
           <Button
-            variant={
-              editor.isActive('heading', { level: 1 }) ? 'default' : 'ghost'
-            }
+            variant={editor.isActive('heading', { level: 1 }) ? 'default' : 'ghost'}
             size='sm'
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 1 }).run()
-            }
+            onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
           >
             <Heading1 className='h-4 w-4' />
           </Button>
           <Button
-            variant={
-              editor.isActive('heading', { level: 2 }) ? 'default' : 'ghost'
-            }
+            variant={editor.isActive('heading', { level: 2 }) ? 'default' : 'ghost'}
             size='sm'
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 2 }).run()
-            }
+            onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
           >
             <Heading2 className='h-4 w-4' />
           </Button>
           <Button
-            variant={
-              editor.isActive('heading', { level: 3 }) ? 'default' : 'ghost'
-            }
+            variant={editor.isActive('heading', { level: 3 }) ? 'default' : 'ghost'}
             size='sm'
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 3 }).run()
-            }
+            onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
           >
             <Heading3 className='h-4 w-4' />
           </Button>
 
-          <Separator
-            orientation='vertical'
-            className='mx-1 h-6'
-          />
+          <Separator orientation='vertical' className='mx-1 h-6' />
 
           {/* Lists */}
           <Button
@@ -409,53 +370,39 @@ export default function TextEditor({
             <ListOrdered className='h-4 w-4' />
           </Button>
 
-          <Separator
-            orientation='vertical'
-            className='mx-1 h-6'
-          />
+          <Separator orientation='vertical' className='mx-1 h-6' />
 
           {/* Alignment */}
           <Button
-            variant={
-              editor.isActive({ textAlign: 'left' }) ? 'default' : 'ghost'
-            }
+            variant={editor.isActive({ textAlign: 'left' }) ? 'default' : 'ghost'}
             size='sm'
             onClick={() => editor.chain().focus().setTextAlign('left').run()}
           >
             <AlignLeft className='h-4 w-4' />
           </Button>
           <Button
-            variant={
-              editor.isActive({ textAlign: 'center' }) ? 'default' : 'ghost'
-            }
+            variant={editor.isActive({ textAlign: 'center' }) ? 'default' : 'ghost'}
             size='sm'
             onClick={() => editor.chain().focus().setTextAlign('center').run()}
           >
             <AlignCenter className='h-4 w-4' />
           </Button>
           <Button
-            variant={
-              editor.isActive({ textAlign: 'right' }) ? 'default' : 'ghost'
-            }
+            variant={editor.isActive({ textAlign: 'right' }) ? 'default' : 'ghost'}
             size='sm'
             onClick={() => editor.chain().focus().setTextAlign('right').run()}
           >
             <AlignRight className='h-4 w-4' />
           </Button>
           <Button
-            variant={
-              editor.isActive({ textAlign: 'justify' }) ? 'default' : 'ghost'
-            }
+            variant={editor.isActive({ textAlign: 'justify' }) ? 'default' : 'ghost'}
             size='sm'
             onClick={() => editor.chain().focus().setTextAlign('justify').run()}
           >
             <AlignJustify className='h-4 w-4' />
           </Button>
 
-          <Separator
-            orientation='vertical'
-            className='mx-1 h-6'
-          />
+          <Separator orientation='vertical' className='mx-1 h-6' />
 
           {/* Special Text */}
           <Button
@@ -480,18 +427,11 @@ export default function TextEditor({
             <Highlighter className='h-4 w-4' />
           </Button>
 
-          <Separator
-            orientation='vertical'
-            className='mx-1 h-6'
-          />
+          <Separator orientation='vertical' className='mx-1 h-6' />
 
           {/* Color Picker */}
           <div className='relative'>
-            <Button
-              variant='ghost'
-              size='sm'
-              onClick={() => setShowColorPicker(!showColorPicker)}
-            >
+            <Button variant='ghost' size='sm' onClick={() => setShowColorPicker(!showColorPicker)}>
               <Palette className='h-4 w-4' />
             </Button>
             {showColorPicker && (
@@ -503,8 +443,8 @@ export default function TextEditor({
                       className='w-6 h-6 rounded border border-gray-300 hover:scale-110 transition-transform'
                       style={{ backgroundColor: color }}
                       onClick={() => {
-                        editor.chain().focus().setColor(color).run();
-                        setShowColorPicker(false);
+                        editor.chain().focus().setColor(color).run()
+                        setShowColorPicker(false)
                       }}
                     />
                   ))}
@@ -514,8 +454,8 @@ export default function TextEditor({
                   size='sm'
                   className='w-full mt-2'
                   onClick={() => {
-                    editor.chain().focus().unsetColor().run();
-                    setShowColorPicker(false);
+                    editor.chain().focus().unsetColor().run()
+                    setShowColorPicker(false)
                   }}
                 >
                   Remove Color
@@ -524,10 +464,7 @@ export default function TextEditor({
             )}
           </div>
 
-          <Separator
-            orientation='vertical'
-            className='mx-1 h-6'
-          />
+          <Separator orientation='vertical' className='mx-1 h-6' />
 
           {/* Link */}
           <Button
@@ -546,27 +483,17 @@ export default function TextEditor({
             <Unlink className='h-4 w-4' />
           </Button>
 
-          <Separator
-            orientation='vertical'
-            className='mx-1 h-6'
-          />
+          <Separator orientation='vertical' className='mx-1 h-6' />
 
           {/* Media */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant='ghost'
-                size='sm'
-                className='flex items-center gap-1'
-              >
+              <Button variant='ghost' size='sm' className='flex items-center gap-1'>
                 <ImageIcon className='h-4 w-4' />
                 <ChevronDown className='h-3 w-3' />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align='start'
-              className='w-48'
-            >
+            <DropdownMenuContent align='start' className='w-48'>
               <DropdownMenuItem onClick={addImage}>
                 <ImageIcon className='h-4 w-4 mr-2' />
                 Regular Image
@@ -597,32 +524,18 @@ export default function TextEditor({
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button
-            variant='ghost'
-            size='sm'
-            onClick={addYoutubeVideo}
-          >
+          <Button variant='ghost' size='sm' onClick={addYoutubeVideo}>
             <YoutubeIcon className='h-4 w-4' />
           </Button>
 
-          <Separator
-            orientation='vertical'
-            className='mx-1 h-6'
-          />
+          <Separator orientation='vertical' className='mx-1 h-6' />
 
           {/* Table */}
-          <Button
-            variant='ghost'
-            size='sm'
-            onClick={addTable}
-          >
+          <Button variant='ghost' size='sm' onClick={addTable}>
             <TableIcon className='h-4 w-4' />
           </Button>
 
-          <Separator
-            orientation='vertical'
-            className='mx-1 h-6'
-          />
+          <Separator orientation='vertical' className='mx-1 h-6' />
 
           {/* Quote and Code Block */}
           <Button
@@ -640,10 +553,7 @@ export default function TextEditor({
             <Type className='h-4 w-4' />
           </Button>
 
-          <Separator
-            orientation='vertical'
-            className='mx-1 h-6'
-          />
+          <Separator orientation='vertical' className='mx-1 h-6' />
 
           {/* Horizontal Rule */}
           <Button
@@ -659,9 +569,7 @@ export default function TextEditor({
           <Button
             variant='ghost'
             size='sm'
-            onClick={() =>
-              editor.chain().focus().clearNodes().unsetAllMarks().run()
-            }
+            onClick={() => editor.chain().focus().clearNodes().unsetAllMarks().run()}
             title='Clear formatting'
           >
             <MoreHorizontal className='h-4 w-4' />
@@ -672,10 +580,7 @@ export default function TextEditor({
       {/* Editor Content */}
       <div className='relative'>
         {/* Bubble Menu */}
-        <BubbleMenu
-          editor={editor}
-          tippyOptions={{ duration: 100 }}
-        >
+        <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }}>
           <div className='bg-white border border-gray-200 rounded-lg shadow-lg p-1 flex items-center gap-1'>
             <Button
               variant={editor.isActive('bold') ? 'default' : 'ghost'}
@@ -698,28 +603,19 @@ export default function TextEditor({
             >
               <UnderlineIcon className='h-4 w-4' />
             </Button>
-            <Button
-              variant='ghost'
-              size='sm'
-              onClick={setLink}
-            >
+            <Button variant='ghost' size='sm' onClick={setLink}>
               <LinkIcon className='h-4 w-4' />
             </Button>
           </div>
         </BubbleMenu>
 
         {/* Floating Menu */}
-        <FloatingMenu
-          editor={editor}
-          tippyOptions={{ duration: 100 }}
-        >
+        <FloatingMenu editor={editor} tippyOptions={{ duration: 100 }}>
           <div className='bg-white border border-gray-200 rounded-lg shadow-lg p-1 flex items-center gap-1'>
             <Button
               variant='ghost'
               size='sm'
-              onClick={() =>
-                editor.chain().focus().toggleHeading({ level: 1 }).run()
-              }
+              onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
             >
               <Heading1 className='h-4 w-4' />
             </Button>
@@ -730,11 +626,7 @@ export default function TextEditor({
             >
               <List className='h-4 w-4' />
             </Button>
-            <Button
-              variant='ghost'
-              size='sm'
-              onClick={addImage}
-            >
+            <Button variant='ghost' size='sm' onClick={addImage}>
               <ImageIcon className='h-4 w-4' />
             </Button>
             <Button
@@ -747,10 +639,12 @@ export default function TextEditor({
           </div>
         </FloatingMenu>
 
-        <EditorContent
-          editor={editor}
-          className='prose prose-sm sm:prose lg:prose-lg xl:prose-xl max-w-none p-4 min-h-[300px] focus:outline-none'
-        />
+        <div className='editor-container'>
+          <EditorContent
+            editor={editor}
+            className='prose prose-sm sm:prose lg:prose-lg xl:prose-xl max-w-none p-4 focus:outline-none'
+          />
+        </div>
       </div>
 
       {/* Footer with Character Count */}
@@ -758,10 +652,7 @@ export default function TextEditor({
         <div className='flex gap-4'>
           <span>{getEditorStats(editor).characters} characters</span>
           <span>{getEditorStats(editor).words} words</span>
-          <span>
-            {getEditorStats(editor).charactersWithoutSpaces} characters (no
-            spaces)
-          </span>
+          <span>{getEditorStats(editor).charactersWithoutSpaces} characters (no spaces)</span>
         </div>
         {editor.isActive('table') && (
           <div className='flex gap-1'>
@@ -818,5 +709,5 @@ export default function TextEditor({
         )}
       </div>
     </div>
-  );
+  )
 }

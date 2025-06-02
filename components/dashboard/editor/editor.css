@@ -2,6 +2,7 @@
 .ProseMirror {
   outline: none;
   overflow: visible;
+  min-height: 360px; /* Ensure minimum height for content area */
 }
 
 .ProseMirror p.is-editor-empty:first-child::before {
@@ -317,4 +318,29 @@
 
 .ProseMirror mark[data-color='#fbcfe8'] {
   background-color: #fbcfe8;
+}
+
+/* Editor container with fixed height and scroll */
+.editor-container {
+  height: 400px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+.editor-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.editor-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.editor-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.editor-container::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
 }
