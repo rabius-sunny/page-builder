@@ -1,4 +1,6 @@
-type TProps = {};
+import Link from 'next/link'
+
+type TProps = {}
 
 export default function Page({}: TProps) {
   return (
@@ -6,6 +8,7 @@ export default function Page({}: TProps) {
       <h1 className='text-4xl font-medium text-emerald-500'>
         Welcome to page builder, a wp industry killer! 💪😤
       </h1>
+      <Link href='/dashboard'></Link>
     </div>
-  );
+  )
 }
